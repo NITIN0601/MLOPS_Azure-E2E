@@ -1,11 +1,60 @@
-# e2e-mlops-azure
+# MLOPS_Azure-E2E
 
-This repo is intended to demonstrate an end-to-end MLOps workflow on Databricks using Azure DevOps, where a model is deployed along with its ancillary pipelines to a specified (currently single) Databricks workspace.
-Each pipeline (e.g model training pipeline, model deployment pipeline) is deployed as a [Databricks job](https://docs.databricks.com/data-engineering/jobs/jobs.html), where these jobs are deployed to a Databricks workspace using Databricks Labs' [`dbx`](https://dbx.readthedocs.io/en/latest/index.html) tool. 
+MLOps Workflow on Databricks with Azure DevOps
+This repository demonstrates an end-to-end MLOps (Machine Learning Operations) workflow on Databricks using Azure DevOps. The goal is to deploy a model, along with its ancillary pipelines, to a specified Databricks workspace. The workflow utilizes Databricks Labs' dbx tool to deploy the pipelines as Databricks jobs.
 
-The use case at hand is a churn prediction problem. We use the [IBM Telco Customer Churn dataset](https://community.ibm.com/community/user/businessanalytics/blogs/steven-macko/2019/07/11/telco-customer-churn-1113) to build a simple classifier to predict whether a customer will churn from a fictional telco company.
+Use Case: Churn Prediction
+The use case presented in this repository focuses on a churn prediction problem. We leverage the IBM Telco Customer Churn dataset, which can be accessed [`here`](https://community.ibm.com/community/user/businessanalytics/blogs/steven-macko/2019/07/11/telco-customer-churn-1113). The dataset contains information about customers from a fictional telco company. Our objective is to build a simple classifier that can predict whether a customer is likely to churn.
 
-Note that the package is solely developed via an IDE, and as such there are no Databricks Notebooks in the repository. All jobs are executed via a command line based workflow using [`dbx`](https://dbx.readthedocs.io/en/latest/).
+Please note that this package is developed exclusively using an IDE, and thus, there are no Databricks Notebooks within the repository. All jobs are executed through a command line-based workflow using the dbx tool.
+
+Workflow Overview
+The MLOps workflow in this repository consists of several pipelines, each deployed as a Databricks job. These pipelines cover various stages of the model lifecycle, including model training and model deployment. The following pipelines are included:
+
+*Data Preprocessing Pipeline:* This pipeline prepares the Telco Customer Churn dataset for model training. It handles tasks such as data cleaning, feature engineering, and data splitting into training and validation sets.
+
+*Model Training Pipeline:* This pipeline trains a classifier using the preprocessed data from the previous pipeline. It applies a machine learning algorithm to build a churn prediction model and evaluates its performance using appropriate metrics.
+
+*Model Deployment Pipeline:* This pipeline deploys the trained model to the specified Databricks workspace. It sets up the necessary infrastructure, such as creating an endpoint for serving predictions and configuring the required resources.
+
+Each pipeline is implemented as a Databricks job, leveraging the capabilities provided by the dbx tool from Databricks Labs. The dbx tool allows for command line-based execution of jobs, enabling seamless integration with the Azure DevOps environment.
+
+Getting Started
+To get started with this MLOps workflow, follow the steps below:
+
+Clone this repository to your local development environment.
+
+-> Set up an Azure DevOps project and create a pipeline to execute the required jobs. Refer to the Azure DevOps documentation for detailed instructions on creating and configuring pipelines.
+
+-> Configure the Databricks workspace connection in the Azure DevOps pipeline. Provide the necessary credentials and workspace details to enable communication between Azure DevOps and Databricks.
+
+-> Customize the pipeline configuration files located in the pipelines directory. Adjust the parameters, file paths, and any other settings as per your specific Databricks workspace and requirements.
+
+Execute the pipeline(s) in Azure DevOps and monitor the job statuses and logs to track the progress of the MLOps workflow.
+
+Additional Resources
+For more information on Databricks, Azure DevOps, and the tools used in this repository, refer to the following resources:
+
+Databricks Documentation: [`docs`](https://docs.databricks.com/)
+
+
+Azure DevOps Documentation: [`docs`](https://docs.microsoft.com/en-us/azure/devops/)
+
+
+Databricks Labs' dbx Tool Documentation: [`dbx`](https://dbx.readthedocs.io/en/latest/index.html)
+
+
+License
+This repository is licensed under the MIT License. Feel free to modify and adapt the codebase to suit your needs.
+
+Acknowledgments
+We would like to acknowledge the contributors and developers who have made this MLOps workflow possible. Thank you for your efforts in advancing the field of machine learning and software engineering.
+
+If you have any questions or encounter any issues while using this repository, please open an issue in the GitHub repository or contact us directly.
+
+Happy MLOps-ing!
+
+
 
 ## Pipelines
 
@@ -24,16 +73,16 @@ The following pipelines currently defined within the package are:
     - Load a model from MLflow Model Registry, load features from Feature Store and score batch.
 
 ## Demo
-The following outlines the workflow to demo the repo.
+The following outlines the workflow to demo the repo. 
 
 ### Set up
 1. Fork https://github.com/alexxx-db/e2e-mlops-azure
 1. Configure [Databricks CLI connection profile](https://docs.databricks.com/dev-tools/cli/index.html#connection-profiles)
     - The project is designed to use 3 different Databricks CLI connection profiles: dev, staging and prod. 
-      These profiles are set in [e2e-mlops-azure/.dbx/project.json](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/.dbx/project.json).
+      These profiles are set in [e2e-mlops-azure/.dbx/project.json](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/.dbx/project.json).
     - Note that for demo purposes we use the same connection profile for each of the 3 environments. 
       **In practice each profile would correspond to separate dev, staging and prod Databricks workspaces.**
-    - This [project.json](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/.dbx/project.json) file will have to be 
+    - This [project.json](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/.dbx/project.json) file will have to be 
       adjusted accordingly to the connection profiles a user has configured on their local machine.
 1. Configure Databricks the following variables for use in the Azure DevOps pipelines:
         - `DATABRICKS_STAGING_HOST`
@@ -53,13 +102,13 @@ The following outlines the workflow to demo the repo.
     - MLflow experiment
         - MLflow Experiments during model training and model deployment will be used in both the dev and prod environments. 
           The paths to these experiments are configured in their respective environment `.env` files. 
-          For example, the workspace paths to use for the production environment MLflow experiments will be defined under [`./conf/prod/.prod.env`](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/conf/prod/.prod.env)    
+          For example, the workspace paths to use for the production environment MLflow experiments will be defined under [`./conf/prod/.prod.env`](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/conf/prod/.prod.env)    
         - For demo purposes, we delete these experiments if they exist to begin from a blank slate.
     - Model Registry
         - Delete Model in MLflow Model Registry if exists.
     
     **NOTE:** As part of the `initial-model-train-register` multitask job, the first task `demo-setup` will delete these, 
-   as specified in [`demo_setup.yml`](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/conf/pipeline_configs/demo_setup.yml).
+   as specified in [`demo_setup.yml`](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/conf/pipeline_configs/demo_setup.yml).
 
 ### Workflow
 
@@ -83,9 +132,9 @@ The following outlines the workflow to demo the repo.
            ```
            See the Limitations section below regarding running multitask jobs. In order to reduce cluster start up time
            you may want to consider using a [Databricks pool](https://docs.databricks.com/clusters/instance-pools/index.html), 
-           and specify this pool ID in [`conf/deployment.yml`](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/conf/deployment.yml).
+           and specify this pool ID in [`conf/deployment.yml`](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/conf/deployment.yml).
     - `telco-churn-initial-model-train-register` tasks:
-        1. Demo setup task steps ([`demo-setup`](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/telco_churn/pipelines/demo_setup_job.py))
+        1. Demo setup task steps ([`demo-setup`](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/telco_churn/pipelines/demo_setup_job.py))
             1. Delete Model Registry model if exists (archive any existing models).
             1. Delete MLflow experiment if exists.
             1. Delete Feature Table if exists.
@@ -103,8 +152,8 @@ The following outlines the workflow to demo the repo.
 
     - Create new “dev/new_model” branch 
         - `git checkout -b  dev/new_model`
-    - Make a change to the [`model_train.yml`](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/conf/pipeline_configs/model_train.yml) config file, updating `max_depth` under model_params from 4 to 8
-        - Optional: change run name under mlflow params in [`model_train.yml`](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/conf/pipeline_configs/model_train.yml) config file
+    - Make a change to the [`model_train.yml`](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/conf/pipeline_configs/model_train.yml) config file, updating `max_depth` under model_params from 4 to 8
+        - Optional: change run name under mlflow params in [`model_train.yml`](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/conf/pipeline_configs/model_train.yml) config file
     - Create pull request, to merge the branch dev/new_model into main
 
 * On pull request the following steps are triggered in Azure DevOps pipelines:
@@ -156,7 +205,7 @@ The following outlines the workflow to demo the repo.
     
     - Model deployment job steps  (`PROD-telco-churn-model-deployment`)
         1. Compare new “candidate model” in `stage='Staging'` versus current Production model in `stage='Production'`.
-        1. Comparison criteria set through [`model_deployment.yml`](https://github.com/alexxx-db/e2e-mlops-azure/blob/main/conf/pipeline_configs/model_deployment.yml)
+        1. Comparison criteria set through [`model_deployment.yml`](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/conf/pipeline_configs/model_deployment.yml)
             1. Compute predictions using both models against a specified reference dataset
             1. If Staging model performs better than Production model, promote Staging model to Production and archive existing Production model
             1. If Staging model performs worse than Production model, archive Staging model
@@ -212,7 +261,10 @@ There are two options for running integration tests:
 - On an interactive cluster via `dbx execute`
 - On a job cluster via `dbx launch`
 
-For quicker startup of the job clusters we recommend using instance pools ([AWS](https://docs.databricks.com/clusters/instance-pools/index.html), [Azure](https://docs.microsoft.com/en-us/azure/databricks/clusters/instance-pools/), [GCP](https://docs.gcp.databricks.com/clusters/instance-pools/index.html)).
+For quicker startup of the job clusters we recommend using instance pools 
+([AWS](https://docs.databricks.com/clusters/instance-pools/index.html), 
+[Azure](https://docs.microsoft.com/en-us/azure/databricks/clusters/instance-pools/), 
+[GCP](https://docs.gcp.databricks.com/clusters/instance-pools/index.html)).
 
 For an integration test on interactive cluster, use the following command:
 ```
