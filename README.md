@@ -11,11 +11,11 @@ Please note that this package is developed exclusively using an IDE, and thus, t
 Workflow Overview
 The MLOps workflow in this repository consists of several pipelines, each deployed as a Databricks job. These pipelines cover various stages of the model lifecycle, including model training and model deployment. The following pipelines are included:
 
-`*Data Preprocessing Pipeline:*` This pipeline prepares the Telco Customer Churn dataset for model training. It handles tasks such as data cleaning, feature engineering, and data splitting into training and validation sets.
+*`Data Preprocessing Pipeline:`* This pipeline prepares the Telco Customer Churn dataset for model training. It handles tasks such as data cleaning, feature engineering, and data splitting into training and validation sets.
 
-`*Model Training Pipeline:*` This pipeline trains a classifier using the preprocessed data from the previous pipeline. It applies a machine learning algorithm to build a churn prediction model and evaluates its performance using appropriate metrics.
+*`Model Training Pipeline:`* This pipeline trains a classifier using the preprocessed data from the previous pipeline. It applies a machine learning algorithm to build a churn prediction model and evaluates its performance using appropriate metrics.
 
-`*Model Deployment Pipeline:*` This pipeline deploys the trained model to the specified Databricks workspace. It sets up the necessary infrastructure, such as creating an endpoint for serving predictions and configuring the required resources.
+*`Model Deployment Pipeline:`* This pipeline deploys the trained model to the specified Databricks workspace. It sets up the necessary infrastructure, such as creating an endpoint for serving predictions and configuring the required resources.
 
 Each pipeline is implemented as a Databricks job, leveraging the capabilities provided by the dbx tool from Databricks Labs. The dbx tool allows for command line-based execution of jobs, enabling seamless integration with the Azure DevOps environment.
 
