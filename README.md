@@ -76,7 +76,7 @@ The following pipelines currently defined within the package are:
 The following outlines the workflow to demo the repo. 
 
 ### Set up
-1. Fork https://github.com/alexxx-db/e2e-mlops-azure
+1. Fork [Fork_Github](https://github.com/NITIN0601/MLOPS_Azure-E2E)
 1. Configure [Databricks CLI connection profile](https://docs.databricks.com/dev-tools/cli/index.html#connection-profiles)
     - The project is designed to use 3 different Databricks CLI connection profiles: dev, staging and prod. 
       These profiles are set in [e2e-mlops-azure/.dbx/project.json](https://github.com/NITIN0601/MLOPS_Azure-E2E/blob/main/.dbx/project.json).
